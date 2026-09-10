@@ -69,6 +69,7 @@ firmware, or DRM content are involved.
 
 ## Community
 
+- 📊 **[Program status](https://github.com/project-dorado/.github/blob/main/STATUS.md)** — what's done and what's pending across the organization
 - 📖 **[Contributing](https://github.com/project-dorado/.github/blob/main/CONTRIBUTING.md)** — how to build, test, and open a great pull request
 - 🛡️ **[Security policy](https://github.com/project-dorado/.github/blob/main/SECURITY.md)** — report a vulnerability privately
 - 🤝 **[Code of Conduct](https://github.com/project-dorado/.github/blob/main/CODE_OF_CONDUCT.md)** — the standards we hold ourselves to
