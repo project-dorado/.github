@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="Dorado">
+  <defs>
+    <linearGradient id="loopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E91E63" />
+      <stop offset="50%" stop-color="#FF5722" />
+      <stop offset="100%" stop-color="#FFC107" />
+    </linearGradient>
+    <linearGradient id="fade" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0D0D0F" stop-opacity="0" />
+      <stop offset="100%" stop-color="#0D0D0F" stop-opacity="0.85" />
+    </linearGradient>
+    <radialGradient id="glow" cx="22%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#FF5722" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#FF5722" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1280" height="320" rx="20" fill="#0D0D0F" />
+  <rect width="1280" height="320" rx="20" fill="url(#glow)" />
+
+  <!-- mark -->
+  <g transform="translate(96,64) scale(0.96)">
+    <path d="M 50,50 L 150,50 L 150,85 L 85,130 L 150,130 L 150,160 L 50,160 L 50,125 L 115,80 L 50,80 Z"
+          stroke="url(#loopGrad)" stroke-width="12"
+          stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+
+  <!-- wordmark -->
+  <text x="360" y="168" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif"
+        font-size="112" font-weight="700" letter-spacing="10" fill="#FFFFFF">DORADO</text>
+  <text x="366" y="216" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif"
+        font-size="26" font-weight="400" letter-spacing="6" fill="#9AA0A6">THE ZUNE EXPERIENCE, REBORN</text>
+
+  <!-- accents -->
+  <g fill="#FFC107">
+    <circle cx="366" cy="252" r="5" />
+    <circle cx="392" cy="252" r="5" fill="#FF5722" />
+    <circle cx="418" cy="252" r="5" fill="#E91E63" />
+  </g>
+  <rect x="96" y="268" width="1088" height="2" rx="1" fill="#1F1F22" />
+</svg>
