@@ -101,7 +101,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
 | **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client, GDPR export + erasure (revokes tokens). ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, email verification/password reset, pgvector QuickMix. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup. ⏳ Remaining: MPRIS/SMTC + media keys, remaining i18n locales. |
-| **RE corpus export** | dorado-hd | ✅ `scripts/ghidra/ExportDecompiled.java` post-script exports per-function C + a `*.functions.json` index (gemstone.exe 2,738 fns / xuidll.dll 2,144 fns; 1,600 decompiled). ⏳ Mine the corpus for canon/behavior gaps. |
+| **RE corpus** | dorado-hd | ✅ Full corpus built: **109/109** modules, **66,598** functions decompiled, **4,169** exports applied, **22,479** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
 ## Verification
