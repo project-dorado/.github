@@ -5,6 +5,17 @@
 **Scope:** Solution, contract, linkage and mock-vs-live audit across all repos under `/home/john/Projects/project-dorado`.
 **Outputs:** Itemized blocker list for the immediate parity push. Drives Phases 2–5 of the goal.
 
+> **RESOLVED (2026-09-10, after the integration program).** This audit drove the
+> cross-repo integration push; the blockers below are closed. Since it was written:
+> the shared SDK exposes the full contract surface with centralized auth
+> (`DoradoCloudAuthHandler` / `AddDoradoCloudAuth`); the desktop and Android clients are
+> cloud-wired; the desktop LAN sync endpoint + mDNS advertising and the HD
+> discovery/pairing client ship; the desktop→emu IPC bridge ships; EF Core Postgres
+> migrations and identity hardening (rate limiting, fail-closed admin, CORS allowlist,
+> GDPR export/erasure) landed; and real DSP audio analysis, Mixview related-artist
+> satellites and AcoustID enrichment shipped. Current canonical status:
+> [`STATUS.md`](../STATUS.md).
+
 ---
 
 ## 1. Solution & Project Inventory
@@ -53,14 +64,12 @@
 
 ## 4. Client SDK Surface — `dorado-cloud/clients/DoradoCloud.Client/`
 
-```
-DoradoCloudClient.HttpClient exposes:
-  - PingModuleAsync(module)              → GET v1/{module}/ping
-  - CheckForUpdateAsync(app, channel)    → GET v1/updates/{app}/{channel}
-  - GetMeAsync()                         → GET v1/identity/me
-```
-
-Three methods total. Server modules expose many more (`/v1/catalog/search`, `/v1/catalog/artists/{mbid}`, `/v1/artwork/front/{mbid}`, `/v1/artwork/proxy`, `/v1/directory/podcasts/search`, `/v1/directory/radio/search`, `/v1/recs/quickmix`, `/v1/identity/me/devices`, `/v1/identity/me/settings`, `/v1/social/profiles/{handle}`, `/v1/social/feed`, `/v1/social/zune-card/{handle}`, etc.).
+**Resolved:** the typed client now mirrors the entire `/v1/{module}` surface —
+liveness, catalog, artwork, directory, recommendations, updates (with signature
+verification), identity (me/devices/settings), and social (profiles/follow/feed/
+Zune Card/badges/moderation) — and `AddDoradoCloudAuth` installs a bearer/refresh
+`DelegatingHandler`. The DTO redefinitions noted in §3 were removed; the client
+consumes `DoradoCloud.Shared.Contracts` directly.
 
 ---
 
@@ -68,11 +77,11 @@ Three methods total. Server modules expose many more (`/v1/catalog/search`, `/v1
 
 | Vector | Wired? | Evidence |
 |---|---|---|
-| `dorado` → `dorado-cloud` (ProjectReference) | ❌ | `grep -r "DoradoCloud"` across `dorado/` returns **0 hits** outside cloud's own project |
-| `dorado-hd` → `dorado-cloud` (REST / JSON-RPC mapping) | ❌ | `grep -r "dorado-cloud\|cloud.dorado"` in `dorado-hd/` → 0 hits; only direct MusicBrainz / LRCLIB / Last.fm / community-artist-image calls |
-| `dorado` → `dorado-emu` (CLI / in-proc embed) | ❌ | `dorado-emu/src/Dorado.Cli` exists but is not referenced by `Dorado.Desktop.csproj`; the `Dorado.Containers`/`Dorado.Runtime` projects are not on any desktop ProjectReference list |
-| `dorado-hd` → `dorado-emu` (M2 Android embed via AAR / NDK) | ❌ | `dorado-emu/docs/emu-architecture.md` documents `Dorado.Platform.Android` as **designed but not implemented** |
-| `dorado-hd` ↔ `dorado` (LAN sync over JSON-RPC 2.0) | ⚠ Skeleton only | `dorado-hd/.../sync/SyncProtocol.kt` defines service type + method names; `dorado/.../Dorado.Plugins.Protocol/Rpc/JsonRpcChannel.cs` is the host-side channel. **No socket transport, no pairing handshake, no manifest exchange implemented.** |
+| `dorado` → `dorado-cloud` (ProjectReference) | ✅ | `Dorado.Infrastructure.External` references `DoradoCloud.Client`; cloud services + `CloudClientProvider` are registered in `App.axaml.cs` |
+| `dorado-hd` → `dorado-cloud` (REST) | ✅ | `dorado-hd/.../cloud/` (`DoradoCloudClient`, metadata source, sign-in, mix, update-check) with tests |
+| `dorado` → `dorado-emu` (CLI / IPC) | ✅ | `Dorado.Infrastructure.Emulator` bridges the `dorado --ipc` CLI over JSON-RPC |
+| `dorado-hd` → `dorado-emu` (M2 Android embed) | ⏳ | `Dorado.Platform.Android` is designed but not implemented (emulator M2) |
+| `dorado-hd` ↔ `dorado` (LAN sync over JSON-RPC 2.0) | ✅ | desktop `SyncEndpointHost`/`SyncTcpServer` + mDNS advertising; HD `LanSync`/`TcpSyncConnector` discovery + pairing handshake |
 
 ---
 

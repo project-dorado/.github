@@ -12,7 +12,7 @@ normalization gap**.
 
 | Invariant | Desktop | Dorado-HD |
 |---|---|---|
-| Zero corner radius | `DesignInvariantTest` (Avalonia) audits; **PASSED** (25 files, 0 violations) | `DesignInvariantTest` bans `RoundedCornerShape`; **PASSED** |
+| Zero corner radius | `DesignInvariantTest` (Avalonia) audits; **PASSED** (26 files, 0 violations) | `DesignInvariantTest` bans `RoundedCornerShape`; **PASSED** |
 | Text-first navigation | Pivot strips, no icon nav | Crossbar, no icon nav |
 | Tri-state hearts (not stars) | `HeartRating` enum | `Rating` enum |
 | Opacity communicates state | token ladder | token ladder |
@@ -54,9 +54,9 @@ into `dorado/src/Dorado.UI/Assets/Selawik/`; the three `FontFamily` resources in
 with Inter/system fallbacks. All Microsoft font binaries (the four `SegoeZ*.ttf`
 files and `SEGOEZ-LIGHT.TTC`) were deleted. `FontAssetPolicyTests` (2 tests)
 guards the policy: no non-Selawik font binary may exist under `Assets/`, and no
-`FontFamily` may resolve through a `Segoe Z` resource. Build, all 283 desktop
-application tests, and the invariant audit stay green. Sharing is documented in
-`docs/parity/font-sharing.md`.
+`FontFamily` may resolve through a `Segoe Z` resource. Build, all 393 desktop
+application tests, and the invariant audit (26 files, 0 violations) stay green.
+Sharing is documented in `docs/parity/font-sharing.md`.
 
 **Artwork — substantially DONE.** `Dorado.UI.Design.ZuneGlyphs` now provides
 clean-room vector geometries for every UI glyph the views used, and the
