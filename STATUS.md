@@ -17,7 +17,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 
 | Repository | Purpose | State |
 |---|---|---|
-| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 393/393 tests · ~88% weighted parity |
+| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 402/402 tests (incl. golden-image gate) · **~80–84%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md)) |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,410/1,410 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 + M7 done · 123/123 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + extracted-app directories · 43/43 tests · DRM key seam (no keys shipped) |
@@ -160,7 +160,7 @@ per-commit **prerelease tagged with the short commit hash** (first 7 chars of
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
 | **Legacy Zune compat (M7) follow-ups** | dorado-cloud | ✅ Phases 0–4 shipped (host-routed `*.zune.net` Atom/XML). ⏳ Interactive E2E on real hosts-patched Zune 4.8 / HD; legacy login token trust model (bridge still gated); keyless artist imagery for `image.catalog.zune.net`. |
 | **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client, GDPR export + erasure (revokes tokens). ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, email verification/password reset, pgvector QuickMix. |
-| **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup. ⏳ Remaining: MPRIS/SMTC + media keys, remaining i18n locales. |
+| **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup; ✅ 2026-09-11 audit fixes (honest CD rip/burn, ephemeral DISC gate, live device info) + golden-image regression gate. ⏳ Remaining: NP mosaic artwork/crossfade, Smart DJ timeout, playlist search, MPRIS/SMTC + media keys, i18n locales. |
 | **RE corpus** | dorado-hd | ✅ Full corpus built: **114/114** modules (incl. kernel-only `zcstfs.dll`, `keyvault.dll`, `DwXfer.dll`, `zcblock.dll`, `zpartstream.dll`), **67,399** functions decompiled, **4,236** exports applied, **22,610** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
 | **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. 🟡 **M15** partial: share + marketplace discovery done; inbox/user card + audiobooks remain (long-term). |
 | **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees located (external corpus, now fully mirrored + MD5-verified by dorado-hd tooling) and loaded as directory packages; `32BITREQ` loader fix landed. ⏳ Implement the remaining `Microsoft.Xna.Framework` surface (primitives → `GameComponent` tree → content readers → audio/storage stubs). Gap list: `dorado-emu/docs/official-app-corpus.md`. |
@@ -177,7 +177,7 @@ for d in dorado dorado-cloud dorado-emu dorado-hd .github project-dorado.github.
 done
 
 # .NET suites
-dotnet test                          # dorado     → 393 passed (14 Domain + 379 Application)
+dotnet test                          # dorado     → 402 passed (14 Domain + 387 Application + 1 visual golden gate)
 dotnet test DoradoCloud.sln          # cloud      → 123 passed (106 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 43 passed
 
