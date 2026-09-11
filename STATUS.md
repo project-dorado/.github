@@ -14,7 +14,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 382/382 tests · ~88% weighted parity |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 148/148 tests (JDK 21) · M9 done |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 150/150 tests (JDK 21) · M4–M9 done |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 61/61 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 done · 27/27 tests |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
@@ -74,7 +74,6 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Item | Owner area | Notes |
 |---|---|---|
 | **Client ↔ Cloud E2E (interactive)** | dorado / dorado-hd | The server half is smoke-tested; the browser PKCE sign-in round-trip still needs a desktop/mobile session to exercise end to end. |
-| **HD M9.2b — play counts** | dorado-hd | `playCounts` is injected but has no producer/persistence, so *Top Played* degrades to title order. Add a `play_counts` table + recording at the scrobble transition + a UI entry. |
 | **HD M10 — always-on surfaces** | dorado-hd | No widget/Glance infrastructure yet; add a zero-corner-radius Now Playing widget + richer lock screen. |
 | **HD M8.2b — live sync** | dorado-hd / dorado | The desktop endpoint now exists (`SyncEndpointHost`/`SyncTcpServer`); the HD LAN mDNS + TLS client is the remaining side. |
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
@@ -99,7 +98,7 @@ dotnet test DoradoCloud.sln          # cloud      → 61 passed  (44 integration
 dotnet test Dorado.sln               # dorado-emu → 27 passed
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
-JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest   # → 148 passed
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest   # → 150 passed
 ```
 
 > **Toolchain note:** `dorado-hd` unit tests require **JDK 21**. Running
