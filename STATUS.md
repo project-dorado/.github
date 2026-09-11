@@ -18,7 +18,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 393/393 tests · ~88% weighted parity |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 175/175 tests (JDK 21) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,086/1,086 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 63/63 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + extracted-app directories · 43/43 tests · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
@@ -82,6 +82,25 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   and offers a manual "connect by address" fallback. TLS remains a hardening
   item — the desktop endpoint is plain TCP today.
 
+### Dorado-HD official-app reimplementation (M16) ✅
+- **All 62 official Zune HD marketplace packages** now have launchable native
+  implementations (was 21): W1 utilities/music fidelity, W2 card/board + AI,
+  W3/W4 23 casual/puzzle/word titles, W5 touch/toy/physics, W6 six big
+  engines (racing, skating, marble, bowling, AudioFeatures surf, arena),
+  W7 pixel-faithful offline UIs for the dead services.
+- Documentation-first: a behavioral spec per package with
+  `Assembly!Type.Method` citations (`dorado-hd/docs/apps/`), a 62-row register
+  + generated audit (`docs/official-apps-{json,audit.md,gaps.json}`), and a
+  register⇔catalog⇔registry⇔spec test gate.
+- Dependency-free OpenGL ES 3.0 core (`ui/apps/engine3d/`) with pure-JVM math
+  and picking tests; all artwork/levels/word lists/audio re-authored in code.
+- Corpus (external, untracked): whole Zune Archive mirrored (70 items,
+  51.4 GB, per-file MD5); decompiled app tree verifies **7,843/7,844** files
+  (one upstream gap); `color-spill` remains corpus-blocked (GUID collision
+  with Reversi) with provisional genre constants.
+- Gates: `assembleDebug` + `testDebugUnitTest` (1,086) + `lintDebug` green;
+  `DesignInvariantTest` 0 violations.
+
 ### Dorado-HD modern listening + always-on (M9/M10) ✅
 - **M9 — Modern Listening:** on-device DSP audio features, Dynamic Mix, **Top
   Played** from persisted per-track play counts (Room DB v5), Last.fm scrobbling
@@ -124,12 +143,12 @@ per-commit **prerelease tagged with the short commit hash** (first 7 chars of
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup. ⏳ Remaining: MPRIS/SMTC + media keys, remaining i18n locales. |
 | **RE corpus** | dorado-hd | ✅ Full corpus built: **114/114** modules (incl. kernel-only `zcstfs.dll`, `keyvault.dll`, `DwXfer.dll`, `zcblock.dll`, `zpartstream.dll`), **67,399** functions decompiled, **4,236** exports applied, **22,610** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
 | **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. 🟡 **M15** partial: share + marketplace discovery done; inbox/user card + audiobooks remain (long-term). |
-| **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees located (external corpus) and loaded as directory packages; `32BITREQ` loader fix landed. ⏳ Implement the remaining `Microsoft.Xna.Framework` surface (primitives → `GameComponent` tree → content readers → audio/storage stubs). Gap list: `dorado-emu/docs/official-app-corpus.md`. |
+| **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees located (external corpus, now fully mirrored + MD5-verified by dorado-hd tooling) and loaded as directory packages; `32BITREQ` loader fix landed. ⏳ Implement the remaining `Microsoft.Xna.Framework` surface (primitives → `GameComponent` tree → content readers → audio/storage stubs). Gap list: `dorado-emu/docs/official-app-corpus.md`. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
 ## Verification
 
-Executed 2026-09-10:
+Executed 2026-09-11:
 
 ```bash
 # git — every repo: clean tree, 0 ahead / 0 behind after fetch
@@ -143,7 +162,12 @@ dotnet test DoradoCloud.sln          # cloud      → 63 passed  (46 integration
 dotnet test Dorado.sln               # dorado-emu → 43 passed
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
-JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest   # → 167 passed
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,086 passed
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew assembleDebug lintDebug   # → green
+
+# official-app corpus (external, untracked; never committed)
+python3 dorado-hd/tools/zune_archive_mirror.py --dry-run   # 70 items, 51.4 GB
+python3 dorado-hd/tools/zune_app_corpus.py --verify-only   # 7,843/7,844 MD5 verified
 ```
 
 > **Toolchain note:** `dorado-hd` unit tests require **JDK 21**. Running
