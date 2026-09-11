@@ -92,6 +92,27 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 - **Still pending:** M5 (share/Zune-Card export, podcast search), M6 (EQ presets,
   crossfade, live-radio cache, richer lock screen).
 
+## Builds & releases
+
+Builds run automatically on GitHub Actions. The two user-facing builds publish a
+per-commit **prerelease tagged with the short commit hash** (first 7 chars of
+`github.sha`), so every `main` commit has a stable download URL.
+
+| Component | Workflow | Auto release | Assets |
+|---|---|---|---|
+| **dorado** (desktop) | `dorado/.github/workflows/build.yml` | `dorado-<sha7>` prerelease on every `main` push | `Dorado-Linux-x64.tar.gz`, `Dorado-Linux-arm64.tar.gz`, `Dorado-Windows-x64.zip`, `Dorado-Windows-arm64.zip` |
+| **dorado-hd** (Android) | `dorado-hd/.github/workflows/ci.yml` | `dorado-hd-<sha7>` prerelease on every `main` push | `dorado-hd-<sha7>.apk` (debug, sideloadable) |
+
+- **Versioned desktop releases:** push a `dorado-v*` tag to publish a normal,
+  non-prerelease `dorado` release with the same assets.
+- **Retention:** only the newest **10** per-commit prereleases per component are
+  kept; older ones have their tags removed automatically. Versioned `dorado-v*`
+  releases are never pruned.
+- **Android build type:** the published APK is the **debug** build (unsigned but
+  installable); release signing is not yet configured.
+- `dorado-cloud` continues to publish GHCR images tagged by `sha` (plus branch /
+  semver) via `docker/metadata-action`; `dorado-emu` produces no distributable.
+
 ## In progress / pending
 
 | Item | Owner area | Notes |
