@@ -13,7 +13,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 
 | Repository | Purpose | State |
 |---|---|---|
-| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 385/385 tests · ~88% weighted parity |
+| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 389/389 tests · ~88% weighted parity |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 157/157 tests (JDK 21) · M4–M10 done |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 62/62 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 done · 27/27 tests |
@@ -86,7 +86,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls pending. |
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
 | **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client. ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, account lifecycle (verification/reset/GDPR), pgvector QuickMix. |
-| **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites (MusicBrainz). ⏳ Remaining: MusicBrainz + AcoustID scan-time metadata/acoustic dedup, real DSP analysis, MPRIS/SMTC + media keys, remaining i18n locales. |
+| **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT). ⏳ Remaining: MusicBrainz + AcoustID scan-time metadata/acoustic dedup, MPRIS/SMTC + media keys, remaining i18n locales. |
 | **RE corpus export** | dorado-hd | The Ghidra project is imported but never exported — `zune-hd-disassembly/ghidra/decompiled/` is empty. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
@@ -101,7 +101,7 @@ for d in dorado dorado-cloud dorado-emu dorado-hd .github project-dorado.github.
 done
 
 # .NET suites
-dotnet test                          # dorado     → 385 passed (14 Domain + 371 Application)
+dotnet test                          # dorado     → 389 passed (14 Domain + 375 Application)
 dotnet test DoradoCloud.sln          # cloud      → 62 passed  (45 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 27 passed
 
