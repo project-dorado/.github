@@ -5,6 +5,10 @@
 A consolidated view of what has been completed and what remains across the
 organization. Legend: ✅ done · 🚧 in progress · ⏳ pending
 
+> **Single source of truth.** This file is the canonical program status for the
+> organization; repository READMEs and the website link here. Figures are as of
+> the date above.
+
 All figures below were **re-verified against `origin/main` and executed test
 suites on 2026-09-10** (commands in [Verification](#verification)). Every
 repository has a clean working tree and is **0 ahead / 0 behind** its remote.
@@ -14,7 +18,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 393/393 tests · ~88% weighted parity |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 157/157 tests (JDK 21) · M4–M10 done |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 157/157 tests (JDK 21) · M4, M7–M9 done; M10 widget shipped |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 63/63 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 done · 27/27 tests |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
@@ -78,12 +82,22 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   and offers a manual "connect by address" fallback. TLS remains a hardening
   item — the desktop endpoint is plain TCP today.
 
+### Dorado-HD modern listening + always-on (M9/M10) ✅
+- **M9 — Modern Listening:** on-device DSP audio features, Dynamic Mix, **Top
+  Played** from persisted per-track play counts (Room DB v5), Last.fm scrobbling
+  with a durable offline queue, and LRCLIB lyrics.
+- **M10 — Always-on:** a Glance **Now Playing widget** with transport driven by
+  the shared Media3 session. Richer lock-screen art/controls and a sleep timer
+  remain.
+- **Still pending:** M5 (share/Zune-Card export, podcast search), M6 (EQ presets,
+  crossfade, live-radio cache, richer lock screen).
+
 ## In progress / pending
 
 | Item | Owner area | Notes |
 |---|---|---|
 | **Client ↔ Cloud E2E (interactive)** | dorado / dorado-hd | The server half is smoke-tested; the browser PKCE sign-in round-trip still needs a desktop/mobile session to exercise end to end. |
-| **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls pending. |
+| **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls and a sleep timer pending. |
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
 | **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client, GDPR export + erasure (revokes tokens). ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, email verification/password reset, pgvector QuickMix. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup. ⏳ Remaining: MPRIS/SMTC + media keys, remaining i18n locales. |

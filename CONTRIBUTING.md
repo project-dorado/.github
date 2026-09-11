@@ -9,7 +9,7 @@ large change.
 - **Report a bug** using the issue template in the relevant repository.
 - **Request a feature** — especially Zune-parity gaps; cite the behavior if you can.
 - **Send a pull request** for a fix, a parity improvement, or documentation.
-- **Improve tests** — both repos enforce unit tests plus design-invariant audits.
+- **Improve tests** — all repositories run unit tests; the desktop and HD repos also enforce design-invariant audits.
 
 ## Ground rules
 
@@ -42,6 +42,25 @@ python3 -c "import sys; sys.path.insert(0,'scripts'); from mcp_tools import audi
 export JAVA_HOME=/path/to/jdk-21
 ./gradlew test            # unit tests + design-invariant audit
 ./gradlew assembleDebug
+```
+
+### Dorado Cloud (backend — .NET 8)
+
+```bash
+dotnet restore DoradoCloud.sln
+dotnet build DoradoCloud.sln -c Release /warnaserror
+dotnet test  DoradoCloud.sln
+```
+
+Production runs EF Core **migrations** on PostgreSQL; local development uses
+SQLite with `EnsureCreated`. Author migrations with the repo-local tool
+(`dotnet tool restore`, then `dotnet ef …`).
+
+### Dorado-EMU (emulator core — .NET 8)
+
+```bash
+dotnet build Dorado.sln -c Release
+dotnet test  Dorado.sln
 ```
 
 ## Pull request checklist

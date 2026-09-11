@@ -3,6 +3,19 @@
 This repository hosts the **project-dorado** organization profile and the
 organization-wide community health files.
 
+## Projects
+
+| Repository | What it is |
+| :--- | :--- |
+| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) |
+| [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core |
+| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Self-hostable community cloud services (.NET 8) |
+| [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) |
+
+Current program status lives in [`STATUS.md`](STATUS.md) (the canonical source of
+truth for figures across the organization).
+
 - [`profile/README.md`](profile/README.md) — the page rendered at
   https://github.com/project-dorado
 - [`profile/assets/`](profile/assets) — brand assets (logo, banner)

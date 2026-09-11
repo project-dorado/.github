@@ -9,6 +9,12 @@ Need help with a Dorado project? Here is where to go.
   for the feature/parity status.
 - **Dorado-HD (android):** see the [README](https://github.com/project-dorado/dorado-hd#readme)
   and the UI canon in [`docs/zune-hd-ui-canon.md`](https://github.com/project-dorado/dorado-hd/blob/main/docs/zune-hd-ui-canon.md).
+- **Dorado Cloud (backend):** see the [README](https://github.com/project-dorado/dorado-cloud#readme)
+  and [ROADMAP](https://github.com/project-dorado/dorado-cloud/blob/main/ROADMAP.md);
+  the live API exposes OpenAPI/Swagger at `/swagger`.
+- **Dorado-EMU:** see the [README](https://github.com/project-dorado/dorado-emu#readme)
+  and [`docs/`](https://github.com/project-dorado/dorado-emu/tree/main/docs).
+- **Organization-wide status:** [`.github/STATUS.md`](https://github.com/project-dorado/.github/blob/main/STATUS.md).
 
 ## Asking a question
 

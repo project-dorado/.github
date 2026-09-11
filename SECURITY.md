@@ -13,6 +13,7 @@ Use GitHub's private vulnerability reporting:
 
 - Dorado (desktop): https://github.com/project-dorado/dorado/security/advisories/new
 - Dorado-HD (android): https://github.com/project-dorado/dorado-hd/security/advisories/new
+- Dorado Cloud (backend): https://github.com/project-dorado/dorado-cloud/security/advisories/new
 - Dorado-EMU: https://github.com/project-dorado/dorado-emu/security/advisories/new
 
 Include, where possible:
