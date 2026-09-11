@@ -17,7 +17,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 
 | Repository | Purpose | State |
 |---|---|---|
-| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 430/430 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
+| [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 431/431 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,410/1,410 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 + M7 done · 123/123 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + extracted-app directories · 43/43 tests · DRM key seam (no keys shipped) |
@@ -177,7 +177,7 @@ for d in dorado dorado-cloud dorado-emu dorado-hd .github project-dorado.github.
 done
 
 # .NET suites
-dotnet test                          # dorado     → 430 passed (14 Domain + 415 Application + 1 visual golden gate)
+dotnet test                          # dorado     → 431 passed (14 Domain + 416 Application + 1 visual golden gate)
 dotnet test DoradoCloud.sln          # cloud      → 123 passed (106 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 43 passed
 
