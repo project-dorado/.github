@@ -18,7 +18,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 431/431 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,410/1,410 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,477/1,477 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 178/178 tests · M6 media legal-gated (model ready) |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + extracted-app directories · 43/43 tests · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
@@ -139,7 +139,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   51.4 GB, per-file MD5); decompiled app tree verifies **7,843/7,844** files
   (one upstream gap); `color-spill` remains corpus-blocked (GUID collision
   with Reversi) with provisional genre constants.
-- Gates: `assembleDebug` + `testDebugUnitTest` (1,410) + `lintDebug` green;
+- Gates: `assembleDebug` + `testDebugUnitTest` (1,477) + `lintDebug` green;
   `DesignInvariantTest` 0 violations.
 
 ### Dorado-HD modern listening + always-on (M9/M10) ✅
@@ -204,7 +204,7 @@ dotnet test DoradoCloud.sln          # cloud      → 178 passed (161 integratio
 dotnet test Dorado.sln               # dorado-emu → 43 passed
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
-JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,410 passed (unit + UI parity suites)
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,477 passed (unit + UI parity suites)
 JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew assembleDebug lintDebug   # → green
 
 # official-app corpus (external, untracked; never committed)
