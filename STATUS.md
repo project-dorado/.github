@@ -87,7 +87,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
 | **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client. ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, account lifecycle (verification/reset/GDPR), pgvector QuickMix. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT). ⏳ Remaining: MusicBrainz + AcoustID scan-time metadata/acoustic dedup, MPRIS/SMTC + media keys, remaining i18n locales. |
-| **RE corpus export** | dorado-hd | The Ghidra project is imported but never exported — `zune-hd-disassembly/ghidra/decompiled/` is empty. |
+| **RE corpus export** | dorado-hd | ✅ `scripts/ghidra/ExportDecompiled.java` post-script exports per-function C + a `*.functions.json` index (gemstone.exe 2,738 fns / xuidll.dll 2,144 fns; 1,600 decompiled). ⏳ Mine the corpus for canon/behavior gaps. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
 ## Verification
