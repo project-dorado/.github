@@ -19,7 +19,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 431/431 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,410/1,410 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
-| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 + M7 done · 123/123 tests · M6 legal-gated |
+| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 178/178 tests · M6 media legal-gated (model ready) |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + extracted-app directories · 43/43 tests · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
 | [.github](https://github.com/project-dorado/.github) | Org profile + community health files | ✅ published |
@@ -47,7 +47,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 - `NOTICE.md` states the clean-room posture: no Microsoft fonts, artwork,
   firmware, or code are redistributed.
 
-### Dorado Cloud (M0–M5, M7)
+### Dorado Cloud (M0–M12)
 - 8 modules mounted at `/v1/{module}`: `identity`, `catalog`, `artwork`,
   `directory`, `recs`, `social`, `updates`, `media` (stub, legal-gated).
 - OpenIddict OIDC, device registry + versioned settings sync, RS256-signed
@@ -73,7 +73,29 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   stream only from external, untracked corpora and fail closed (`404`) when
   unset; `commerce.zune.net` purchase and Zune-Pass DRM/license endpoints are
   **not** implemented (no DRM circumvention); login is disabled by default.
-- 123/123 tests; Release build 0 warnings (`/warnaserror`).
+- 178/178 tests; Release build 0 warnings (`/warnaserror`).
+
+### Legacy client enablement + hardening (M8–M12) ✅
+- **M8 — Legacy client enablement:** gated `login.zune.net` bridge now issues the
+  `Compact1` `wsse:BinarySecurityToken` the Zune 4.8 client parses and serves
+  `/ppcrlconfig.bin`; a hash-only `LegacySession` store + middleware resolve the
+  client's `Authorization: WLID1.0 <ticket>` header to an account. Client-setup
+  guide, TLS reverse-proxy sample (`deploy/legacy/`), hosted smoke
+  (`tools/legacy-smoke.sh`), and a design-time `DbContext` factory (Postgres-
+  scaffolded migrations).
+- **M9 — Catalog completeness:** artist imagery via keyless Wikidata P18 →
+  Wikimedia and optional providers; podcast hub routes backed by Podcast Index
+  (SSRF-guarded `?url=` passthrough); valid empty movie/video hubs.
+- **M10 — Embeddings:** `TrackEmbedding` store + cosine ranking; opt-in pgvector
+  acceleration (`deploy/pgvector/init.sql`); QuickMix blends embedding
+  neighbours, contract unchanged.
+- **M11 — Identity hardening:** antiforgery on all interactive forms, OIDC
+  consent screen (`ConsentGrant`), email verification + password reset
+  (single-use hashed `AccountToken`, `IEmailSender` default = log), open-redirect
+  hardening.
+- **M12 — Providers & ops:** Fanart.tv/TheAudioDB/Discogs adapters behind
+  `Providers:*` keys; backup/restore, metrics and moderation runbooks plus a
+  sample Grafana dashboard.
 
 ### Client ↔ Cloud integration ✅ (Phase 1)
 - **SDK auth (centralized):** `DoradoCloud.Client` now ships
@@ -157,9 +179,9 @@ per-commit **prerelease tagged with the short commit hash** (first 7 chars of
 |---|---|---|
 | **Client ↔ Cloud E2E (interactive)** | dorado / dorado-hd | The server half is smoke-tested; the browser PKCE sign-in round-trip still needs a desktop/mobile session to exercise end to end. |
 | **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls and a sleep timer pending. |
-| **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
-| **Legacy Zune compat (M7) follow-ups** | dorado-cloud | ✅ Phases 0–4 shipped (host-routed `*.zune.net` Atom/XML). ⏳ Interactive E2E on real hosts-patched Zune 4.8 / HD; legacy login token trust model (bridge still gated); keyless artist imagery for `image.catalog.zune.net`. |
-| **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client, GDPR export + erasure (revokes tokens). ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, email verification/password reset, pgvector QuickMix. |
+| **M6 — Media (PD/CC only)** | dorado-cloud | ✅ Model + license-gated ingestion shipped behind `Media:Enabled=false`. ⏳ Enablement requires legal sign-off. |
+| **Legacy client enablement (M8–M9)** | dorado-cloud | ✅ WS-Trust `Compact1` bridge + session store, hosts/TLS runbook, artist imagery, podcast hub. ⏳ Interactive E2E on real hosts-patched Zune 4.8 / HD; enable `Legacy:Login:Enabled` after review. |
+| **Cloud hardening (M10–M12)** | dorado-cloud | ✅ Postgres migrations, rate limiting, fail-closed admin, CORS, GDPR export/erasure; antiforgery, consent screen, email verification + password reset; embedding store with opt-in pgvector; provider adapters + ops runbooks. ⏳ Replace the logging `IEmailSender` with a real provider before public sign-up. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup; ✅ 2026-09-11 audit remediation M1–M3 (honest CD/device surfaces, mosaic art, crossfade, hover/pressed icons, Smart DJ timeout+Quick Mix progress, playlist search, editable Zune Card) + follow-on phases (all-mode crossfade incl. video, 20-locale i18n, OS media-controls seam, capability-gated CD rip/burn) + golden-image gate. ⏳ Remaining: authentic Iris mosaic art, native MPRIS2/SMTC bindings, Windows IMAPI2, MTPZ, UPnP, full per-view string extraction. |
 | **RE corpus** | dorado-hd | ✅ Full corpus built: **114/114** modules (incl. kernel-only `zcstfs.dll`, `keyvault.dll`, `DwXfer.dll`, `zcblock.dll`, `zpartstream.dll`), **67,399** functions decompiled, **4,236** exports applied, **22,610** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
 | **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. 🟡 **M15** partial: share + marketplace discovery done; inbox/user card + audiobooks remain (long-term). |
@@ -178,7 +200,7 @@ done
 
 # .NET suites
 dotnet test                          # dorado     → 431 passed (14 Domain + 416 Application + 1 visual golden gate)
-dotnet test DoradoCloud.sln          # cloud      → 123 passed (106 integration + 17 client)
+dotnet test DoradoCloud.sln          # cloud      → 178 passed (161 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 43 passed
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
