@@ -15,7 +15,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 393/393 tests · ~88% weighted parity |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · 157/157 tests (JDK 21) · M4–M10 done |
-| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 62/62 tests · M6 legal-gated |
+| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M5 done · 63/63 tests · M6 legal-gated |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 done · 27/27 tests |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
 | [.github](https://github.com/project-dorado/.github) | Org profile + community health files | ✅ published |
@@ -85,7 +85,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | **Client ↔ Cloud E2E (interactive)** | dorado / dorado-hd | The server half is smoke-tested; the browser PKCE sign-in round-trip still needs a desktop/mobile session to exercise end to end. |
 | **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls pending. |
 | **M6 — Media (PD/CC only)** | dorado-cloud | Legal-gated; endpoint is a `501` stub. Requires legal sign-off. |
-| **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client. ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, account lifecycle (verification/reset/GDPR), pgvector QuickMix. |
+| **Cloud hardening** | dorado-cloud | ✅ EF Core Postgres migrations (verified against a real Postgres), auth rate limiting, fail-closed admin, tightened CORS, dev-only smoke client, GDPR export + erasure (revokes tokens). ⏳ Remaining: consent screen, CSRF/antiforgery on HTML forms, email verification/password reset, pgvector QuickMix. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup. ⏳ Remaining: MPRIS/SMTC + media keys, remaining i18n locales. |
 | **RE corpus export** | dorado-hd | ✅ `scripts/ghidra/ExportDecompiled.java` post-script exports per-function C + a `*.functions.json` index (gemstone.exe 2,738 fns / xuidll.dll 2,144 fns; 1,600 decompiled). ⏳ Mine the corpus for canon/behavior gaps. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
@@ -102,7 +102,7 @@ done
 
 # .NET suites
 dotnet test                          # dorado     → 393 passed (14 Domain + 379 Application)
-dotnet test DoradoCloud.sln          # cloud      → 62 passed  (45 integration + 17 client)
+dotnet test DoradoCloud.sln          # cloud      → 63 passed  (46 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 27 passed
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
