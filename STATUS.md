@@ -18,7 +18,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 433/433 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,477/1,477 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,551/1,551 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; **next-steps Track B/C shipped**: fade-through crossfade, live FFT visualizer, sleep timer, richer lock-screen, Smart DJ, podcast search, artist photo grid, radio/picture Now Playing, **audiobooks (D4)**; M15 inbox wiring remains; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 195/195 tests · M6 media legal-gated (model ready) |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + **official-app runtime** (XNB pipeline, ZDK bridge) · **79/79 tests** · **50/54 framework-path titles run headless** · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
@@ -148,9 +148,10 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   with a durable offline queue, and LRCLIB lyrics.
 - **M10 — Always-on:** a Glance **Now Playing widget** with transport driven by
   the shared Media3 session. Richer lock-screen art/controls and a sleep timer
+  are now shipped (DoradoMediaNotificationProvider; settings ▸ playback); the
   remain.
 - **Still pending:** M5 (share/Zune-Card export, podcast search), M6 (EQ presets,
-  crossfade, live-radio cache, richer lock screen).
+  crossfade (fade-through), live FFT visualizer — shipped; live-radio cache remains).
 
 ## Builds & releases
 
@@ -178,13 +179,13 @@ per-commit **prerelease tagged with the short commit hash** (first 7 chars of
 | Item | Owner area | Notes |
 |---|---|---|
 | **Client ↔ Cloud E2E (interactive)** | dorado / dorado-hd | The server half is smoke-tested; the browser PKCE sign-in round-trip still needs a desktop/mobile session to exercise end to end. |
-| **HD M10 — always-on surfaces** | dorado-hd | Glance Now Playing widget done; richer lock-screen art/controls and a sleep timer pending. |
+| **HD M10 — always-on surfaces** | dorado-hd | ✅ Glance widget, richer lock-screen surface (public channel + art) and sleep timer shipped. ⏳ Live-radio pause-and-cache remains (needs a real-time source). |
 | **M6 — Media (PD/CC only)** | dorado-cloud | ✅ Model + license-gated ingestion shipped behind `Media:Enabled=false`. ⏳ Enablement requires legal sign-off. |
 | **Legacy client enablement (M8–M9)** | dorado-cloud | ✅ WS-Trust `Compact1` bridge + session store, hosts/TLS runbook, artist imagery, podcast hub. ⏳ Interactive E2E on real hosts-patched Zune 4.8 / HD; enable `Legacy:Login:Enabled` after review. |
 | **Cloud hardening (M10–M12)** | dorado-cloud | ✅ Postgres migrations, rate limiting, fail-closed admin, CORS, GDPR export/erasure; antiforgery, consent screen, email verification + password reset; embedding store with opt-in pgvector; provider adapters + ops runbooks (backup/metrics/moderation/email). ✅ Configurable SMTP sender (`Identity:Security:Email:Provider=smtp`); ⏳ point it at a provider before public sign-up. |
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup; ✅ 2026-09-11 audit remediation M1–M3 (honest CD/device surfaces, mosaic art, crossfade, hover/pressed icons, Smart DJ timeout+Quick Mix progress, playlist search, editable Zune Card) + follow-on phases (all-mode crossfade incl. video, clean-room Iris mosaic, 20-locale i18n, **Linux MPRIS2** OS media integration on the patched D-Bus lib, capability-gated CD rip/burn) + golden-image gate. ⏳ Remaining: Now-Playing Iris art-frame, Windows SMTC (needs a Windows TFM), Windows IMAPI2, MTPZ, UPnP, full per-view string extraction. |
 | **RE corpus** | dorado-hd | ✅ Full corpus built: **114/114** modules (incl. kernel-only `zcstfs.dll`, `keyvault.dll`, `DwXfer.dll`, `zcblock.dll`, `zpartstream.dll`), **67,399** functions decompiled, **4,236** exports applied, **22,610** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
-| **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. 🟡 **M15** partial: share + marketplace discovery done; inbox/user card + audiobooks remain (long-term). |
+| **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. ✅ **M15** share + marketplace discovery done; **audiobooks (D4)** shipped as a music-crossbar pivot. ⏳ Inbox/user card wiring to the cloud social/inbox API remains. |
 | **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees run as directory packages; the clean-room surface (component model, math, graphics, storage/guide, media/net, audio, XNB pipeline) and the native ZDK bridge (stb_image + stb_truetype + ZDKGL stubs) landed. **50/54 framework-path titles** run headless; GL-path rendering and four external-blocker titles remain. See `dorado-emu/docs/official-app-corpus.md`. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
@@ -206,7 +207,7 @@ native/zdk-bridge/build.sh           # dorado-emu → libZDK.so (image/font/ZDKG
 python3 tools/smoke_official.py      # dorado-emu → 50/54 framework-path titles ran
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
-JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,477 passed (unit + UI parity suites)
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,551 passed (unit + UI parity suites)
 JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew assembleDebug lintDebug   # → green
 
 # official-app corpus (external, untracked; never committed)
