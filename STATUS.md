@@ -20,7 +20,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 433/433 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
 | [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,477/1,477 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; M15 partial; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
 | [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 195/195 tests · M6 media legal-gated (model ready) |
-| [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + **official-app runtime** (XNB pipeline, ZDK bridge) · **79/79 tests** · **39/54 framework-path titles run headless** · DRM key seam (no keys shipped) |
+| [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + **official-app runtime** (XNB pipeline, ZDK bridge) · **79/79 tests** · **50/54 framework-path titles run headless** · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
 | [.github](https://github.com/project-dorado/.github) | Org profile + community health files | ✅ published |
 
@@ -185,7 +185,7 @@ per-commit **prerelease tagged with the short commit hash** (first 7 chars of
 | **Desktop fidelity leftovers** | dorado | ✅ Mixview external related-artist satellites; ✅ real DSP audio analysis (PCM/STFT); ✅ AcoustID scan-time metadata + acoustic dedup; ✅ 2026-09-11 audit remediation M1–M3 (honest CD/device surfaces, mosaic art, crossfade, hover/pressed icons, Smart DJ timeout+Quick Mix progress, playlist search, editable Zune Card) + follow-on phases (all-mode crossfade incl. video, clean-room Iris mosaic, 20-locale i18n, **Linux MPRIS2** OS media integration on the patched D-Bus lib, capability-gated CD rip/burn) + golden-image gate. ⏳ Remaining: Now-Playing Iris art-frame, Windows SMTC (needs a Windows TFM), Windows IMAPI2, MTPZ, UPnP, full per-view string extraction. |
 | **RE corpus** | dorado-hd | ✅ Full corpus built: **114/114** modules (incl. kernel-only `zcstfs.dll`, `keyvault.dll`, `DwXfer.dll`, `zcblock.dll`, `zpartstream.dll`), **67,399** functions decompiled, **4,236** exports applied, **22,610** strings indexed (`ghidra_corpus.py`). Synthesized docs: `zune-hd-module-inventory.md`, `zune-hd-api-reference.md`, `zune-hd-assets.md`. ⏳ Mine for canon/behavior gaps. |
 | **HD on-device parity audit** | dorado-hd | ✅ `docs/zune-hd-parity-audit.md` + `docs/zune-hd-parity-gaps.json`. ✅ **M12–M14** shipped: NP scrubber, queue/showlist, library search, fling cap+snap, kinetic provenance, dimmer + battery/clock status OSD, picture pinch-zoom, EQ presets, sort keys; string-parity + font-import declined with rationale. 🟡 **M15** partial: share + marketplace discovery done; inbox/user card + audiobooks remain (long-term). |
-| **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees run as directory packages; the clean-room surface (component model, math, graphics, storage/guide, media/net, audio, XNB pipeline) and the native ZDK bridge (stb_image + stb_truetype + ZDKGL stubs) landed. **39/54 framework-path titles** run headless; GL-path rendering and app-specific failures remain. See `dorado-emu/docs/official-app-corpus.md`. |
+| **Official app XNA surface** | dorado-emu | ✅ Decrypted official app trees run as directory packages; the clean-room surface (component model, math, graphics, storage/guide, media/net, audio, XNB pipeline) and the native ZDK bridge (stb_image + stb_truetype + ZDKGL stubs) landed. **50/54 framework-path titles** run headless; GL-path rendering and four external-blocker titles remain. See `dorado-emu/docs/official-app-corpus.md`. |
 | **Manual GitHub steps** | org | Confirm the org avatar and pin repositories (profile name, description, and website are already set). |
 
 ## Verification
@@ -203,7 +203,7 @@ dotnet test                          # dorado     → 433 passed (14 Domain + 41
 dotnet test DoradoCloud.sln          # cloud      → 195 passed (178 integration + 17 client)
 dotnet test Dorado.sln               # dorado-emu → 79 passed (incl. official-app smoke)
 native/zdk-bridge/build.sh           # dorado-emu → libZDK.so (image/font/ZDKGL bridge)
-python3 tools/smoke_official.py      # dorado-emu → 39/54 framework-path titles ran
+python3 tools/smoke_official.py      # dorado-emu → 50/54 framework-path titles ran
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
 JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,477 passed (unit + UI parity suites)
