@@ -1,13 +1,15 @@
 # Dorado — Program Status
 
-**Last updated:** 2026-09-11
+**Last updated:** 2026-09-13
 
 A consolidated view of what has been completed and what remains across the
 organization. Legend: ✅ done · 🚧 in progress · ⏳ pending
 
 > **Single source of truth.** This file is the canonical program status for the
-> organization; repository READMEs and the website link here. Figures are as of
-> the date above.
+> organization; repository READMEs, in-repo working notes (e.g.
+> `dorado-hd/docs/parity-roadmap.md`, `docs/ui-parity-audit.md`) and the website
+> defer to it. On any conflict of figures or status, this file wins — update it
+> when a change moves counts or state, and date the change above.
 
 All figures below were **re-verified against `origin/main` and executed test
 suites on 2026-09-10** (commands in [Verification](#verification)). Every
@@ -18,13 +20,21 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
 | Repository | Purpose | State |
 |---|---|---|
 | [dorado](https://github.com/project-dorado/dorado) | Zune 4.8 desktop re-creation (.NET 8 / Avalonia) | ✅ pushed · 433/433 tests (incl. golden-image gate) · **~88%** weight parity ([audited 2026-09-11](https://github.com/project-dorado/dorado/blob/main/docs/parity/audit-2026-09-11.md), remediated M1–M3 + follow-on) |
-| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,602/1,602 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; **next-steps Track B/C shipped**: fade-through crossfade, live FFT visualizer, sleep timer, richer lock-screen, Smart DJ, podcast search, artist photo grid, radio/picture Now Playing, **audiobooks (D4)**; M15 social inbox wired; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
-| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 195/195 tests · M6 media legal-gated (model ready) |
+| [dorado-hd](https://github.com/project-dorado/dorado-hd) | Zune HD Android client (Kotlin / Compose) | ✅ pushed · **1,603/1,603 tests** (JDK 21) · **M16: all 62 official apps implemented** + engine3d core · **UI-parity program complete** (audit + gap register, 63-app smoke/layout/back/golden suites, emulator crawl 63/63) · M4, M7–M9, M12–M14 done; **next-steps Track B/C shipped**: fade-through crossfade, live FFT visualizer, sleep timer, richer lock-screen, Smart DJ, podcast search, artist photo grid, radio/picture Now Playing, **audiobooks (D4)**; M15 social inbox wired; M10 widget · UI/UX deep audit done ([audit](https://github.com/project-dorado/dorado-hd/blob/main/docs/ui-ux-audit.md)) |
+| [dorado-cloud](https://github.com/project-dorado/dorado-cloud) | Community cloud services (.NET 8) | ✅ pushed · M0–M12 done · 200/200 tests · M6 media legal-gated (model ready) |
 | [dorado-emu](https://github.com/project-dorado/dorado-emu) | Zune HD `.zcp`/`.ccgame` XNA emulator core | ✅ pushed · M0–M1 + ZCSTFS volume reader + **official-app runtime** (XNB pipeline, ZDK bridge) · **79/79 tests** · **50/54 framework-path titles run headless** · DRM key seam (no keys shipped) |
 | [project-dorado.github.io](https://github.com/project-dorado/project-dorado.github.io) | Organization website (dorado.org.uk) | ✅ published |
-| [.github](https://github.com/project-dorado/.github) | Org profile + community health files | ✅ published |
+| [.github](https://github.com/project-dorado/.github) | Org profile + community health files | ✅ published · Release signing keys & org secrets provisioned |
 
 ## Completed
+
+### Release signing & cryptographic provenance ✅ complete
+- Cross-organization release signing infrastructure established across `project-dorado`, `Heretek-Games`, and `Heretek-AI`.
+- 4096-bit RSA GPG release signing key and PKCS12 Android release keystore provisioned across organization secrets (`GPG_PRIVATE_KEY`, `GPG_PASSPHRASE`, `GPG_KEY_ID`, `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`).
+- Desktop (`dorado`) workflow enhanced with `SHA256SUMS` generation, detached GPG signatures (`SHA256SUMS.asc`), and Sigstore SLSA build provenance attestations (`actions/attest-build-provenance@v2`).
+- Android client (`dorado-hd`) Gradle build wired with production release signing configuration, and workflow enhanced with signed APK packaging, detached GPG checksum signatures, and Sigstore build provenance attestations.
+- Public key documentation published in `.github/KEYS.md` with ASCII-armored key in `.github/HERETEK_RELEASE_SIGNING_KEY.asc`.
+
 
 ### Repository migration & rebrand
 - `Heretek-AI/not-zune` → **project-dorado/dorado** and
@@ -73,7 +83,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   stream only from external, untracked corpora and fail closed (`404`) when
   unset; `commerce.zune.net` purchase and Zune-Pass DRM/license endpoints are
   **not** implemented (no DRM circumvention); login is disabled by default.
-- 195/195 tests; Release build 0 warnings (`/warnaserror`).
+- 200/200 tests; Release build 0 warnings (`/warnaserror`).
 
 ### Legacy client enablement + hardening (M8–M12) ✅
 - **M8 — Legacy client enablement:** gated `login.zune.net` bridge now issues the
@@ -139,7 +149,7 @@ repository has a clean working tree and is **0 ahead / 0 behind** its remote.
   51.4 GB, per-file MD5); decompiled app tree verifies **7,843/7,844** files
   (one upstream gap); `color-spill` remains corpus-blocked (GUID collision
   with Reversi) with provisional genre constants.
-- Gates: `assembleDebug` + `testDebugUnitTest` (1,602) + `lintDebug` green;
+- Gates: `assembleDebug` + `testDebugUnitTest` (1,603) + `lintDebug` green;
   `DesignInvariantTest` 0 violations.
 
 ### Dorado-HD modern listening + always-on (M9/M10) ✅
@@ -201,13 +211,13 @@ done
 
 # .NET suites
 dotnet test                          # dorado     → 433 passed (14 Domain + 418 Application + 1 visual golden gate)
-dotnet test DoradoCloud.sln          # cloud      → 195 passed (178 integration + 17 client)
+dotnet test DoradoCloud.sln          # cloud      → 200 passed (182 integration + 18 client)
 dotnet test Dorado.sln               # dorado-emu → 79 passed (incl. official-app smoke)
 native/zdk-bridge/build.sh           # dorado-emu → libZDK.so (image/font/ZDKGL bridge)
 python3 tools/smoke_official.py      # dorado-emu → 50/54 framework-path titles ran
 
 # Android suite (JDK 21 required; JDK 26 breaks Robolectric)
-JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,602 passed (unit + UI parity suites)
+JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew testDebugUnitTest        # → 1,603 passed (unit + UI parity suites)
 JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@21/libexec ./gradlew assembleDebug lintDebug   # → green
 
 # official-app corpus (external, untracked; never committed)
@@ -244,10 +254,9 @@ python3 dorado-hd/tools/zune_app_corpus.py --verify-only   # 7,843/7,844 MD5 ver
   redirect, CSRF coverage, pgvector fallback); desktop **MPRIS2** shipped
   (i18n at 20 locales; remaining locales deferred per
   `docs/parity/deferred_registry.md`).
-- **Gates:** HD 1,602/1,602 + lintDebug + ui_lint; emulator entry crawl
+- **Gates:** HD 1,603/1,603 + lintDebug + ui_lint; emulator entry crawl
   63/63 and interactive flow crawl 63/63 (a launch-thread P0 was caught and
   fixed by the crawl).
 - **Documented N/A:** live-radio ±5-min rewind (no time-shifting server);
-  cloud inbox mark-read (server read-only); org repository pinning (manual
-  profile step — descriptions/topics are set).
+  org repository pinning (manual profile step — descriptions/topics are set).
 
